@@ -239,7 +239,7 @@ class CheckoutView(APIView):
             
             return Response({'Message': 'Order Created Successfully'})
         
-        return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 # payment
 class PaymentPageView(APIView):
@@ -281,9 +281,6 @@ class VerifyPaymentView(APIView):
             headers= {"Authorization":f"Bearer {settings.PAYSTACK_SECRET_KEY}"}
             response = requests.get(url,headers=headers)
             response_data = response.json()
-
-            # Log the full response for debugging
-            print("Paystack Response:", response_data)
 
             if response_data["status"] and response_data["data"]["status"]=="success":
                 order.payment_complete = True

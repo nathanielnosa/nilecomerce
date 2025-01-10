@@ -110,6 +110,7 @@ class Order(models.Model):
             # ensure the amount  matches'
             if result['amount']/100 == self.amount:
                 self.payment_complete = True
+                # del self.cart
                 self.save()
                 return True
         # if payment is not successful

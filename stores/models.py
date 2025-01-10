@@ -2,7 +2,7 @@ from django.db import models
 
 import uuid
 import secrets
-from . import Paystack
+from . paystack import Paystack
 
 from users.models import Profile
 
@@ -46,7 +46,7 @@ class Cart(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.total
+        return f'{str(self.total)}'
 
 #::::: CART PRODUCT Model :::::
 class CartProduct(models.Model):
@@ -57,7 +57,7 @@ class CartProduct(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f'Cart Product - {self.cart.id}'
+        return f'Cart Product - {self.cart.id} -{self.quantity}'
 
 #::::: ORDER Model :::::
 ORDER_STATUS=(
@@ -92,7 +92,7 @@ class Order(models.Model):
         #     self.ref = self.secrets.token_urlsafe(50)
         # super().save(**args,**kwargs)
         while not self.ref:
-            ref = self.secrets.token_urlsafe(50)
+            ref = secrets.token_urlsafe(50)
             obj_with_sm_ref = Order.objects.filter(ref=ref)
             if not obj_with_sm_ref:
                 self.ref = ref
@@ -106,7 +106,7 @@ class Order(models.Model):
     def verify_payment(self):
         paystack = Paystack()
         status,result = paystack.verify_payment(self.ref)
-        if status and result.get('success') == 'success':
+        if status and result.get('status') == 'success':
             # ensure the amount  matches'
             if result['amount']/100 == self.amount:
                 self.payment_complete = True

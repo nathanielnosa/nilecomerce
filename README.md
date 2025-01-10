@@ -1,7 +1,7 @@
 # Backend API Project For Nile Commerce
 
 
-## These are pictorial illustration and endpoints
+## These are pictorial illustrations and endpoints
 ## login
 ## - localhost:8000/api/users/login/
 ![image](https://github.com/user-attachments/assets/767c092c-2066-41da-85d1-42e6646137ba)

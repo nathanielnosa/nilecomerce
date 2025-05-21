@@ -11,9 +11,9 @@ class Paystack:
             "Content-Type":"application/json",
         }
         url = self.base_url + path
-        response=response.get(url,headers=headers)
+        response=requests.get(url,headers=headers)
 
-        if response.status_code == 200:
+        if requests.status_code == 200:
             response_data =  response.json()
             if response_data.get('data'):
                 return True, response_data['data']  # Return status and data
